@@ -1,0 +1,47 @@
+
+body{
+    font-size: larger;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    flex-direction: column;
+    height: 100%;
+    margin:0;
+    justify-content: center;
+}
+
+button{
+  
+    width: 8em;  
+    height: 2em;
+    font-size: large;
+}
+
+.content{
+    padding: 4em;
+}
+
+.aligner, #image{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#placeholder{
+    display:flex;
+    align-items: center;
+    flex-flow: row;
+    justify-content: space-around;
+    font-weight: bold;
+
+}
+
+#life{
+    display:flex;
+    align-items: center;
+    flex-flow: row;
+    justify-content: center;
+}
+
