@@ -12,7 +12,6 @@ body{
 }
 
 button{
-  
     width: 8em;  
     height: 2em;
     font-size: large;
@@ -22,8 +21,7 @@ button{
     padding: 4em;
 }
 
-.aligner, #image{
-    
+.aligner, #image{W
     display: flex;
     align-items: center;
     justify-content: center;
