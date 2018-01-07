@@ -56,6 +56,8 @@ readTextFile('words.txt').then((words) => {
 
 
     reset.onclick = () => {
+        document.getElementById("hiddenInput").focus();
+        document.getElementById("hiddenInput").click();
         if (!document.getElementById("final").firstChild) {
             status.points = 0;
             status.level = 1;
@@ -180,7 +182,7 @@ readTextFile('words.txt').then((words) => {
 
     document.addEventListener("keydown", (event) => {
 
-        document.getElementById("#hiddeninput").focus();
+
         if (!document.getElementById('message')) {
             flag_isValidPress = true;
             let flag_noUnderLineRemaining = true;
