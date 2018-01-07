@@ -12,12 +12,7 @@ function playSound(soundID) {
 
 readTextFile('words.txt').then((words) => {
 
-        let target = document.getElementsByTagName("input")[0];
 
-        if (Event.currentTarget !== target) {
-            target.focus();
-            target.click();
-        }
 
 
         const MAX = 5;
@@ -56,12 +51,20 @@ readTextFile('words.txt').then((words) => {
 
 
         reset.onclick = () => {
+            let target = document.getElementsByTagName("input")[0];
+
+            if (Event.currentTarget !== target) {
+                target.focus();
+                target.click();
+                window.scrollTo(0, 0);
+            }
             if (screen.width <= 1280) {
                 document.getElementById('keyboard').style.display = 'inline';
             }
 
             document.getElementById("hiddenInput").focus();
             document.getElementById("hiddenInput").click();
+            window.scrollTo(0, 0);
             if (!document.getElementById("final").firstChild) {
                 status.points = 0;
                 status.level = 1;
@@ -119,6 +122,11 @@ readTextFile('words.txt').then((words) => {
 
             //reset.innerHTML = "RESET";
             let myNode = document.getElementById("placeholder");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            myNode = document.getElementById("info");
             while (myNode.firstChild) {
                 myNode.removeChild(myNode.firstChild);
             }

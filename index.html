@@ -18,6 +18,40 @@
     <div class="aligner">
         <button id="reset">START</button>
     </div>
+
+
+    <div id="info" class="content">
+        <div id="infoL"></div>
+
+        <div id="infoM"><p><b>Name:</b> Hangman</p>
+            <p><b>Description:</b></p>
+            <ul><li> Hangman game with romanian vocabulary from a list consisting in about 600k words.</li>
+                <li> Can be played both on desktop and mobile, but for a better experience I highly recommend the first option.</li>
+                <li> The game is a very good tool for finding out new words and what they mean by playing in its competitive environment with countdowns, levels and points.</li>
+                <li> At the end of each level/game you can find the meaning of the word on DEXonline.</li>
+            </ul>
+
+            <p><b>How to play:</b></p>
+            <ol>
+                <li> You start by pressing the START button.</li>
+                <li> On the top of the screen you will be able to see your current level, time for the current word and the amounts of points gathered till then.</li>
+                <li> Press letters keys in order to guess one part of an random generated word.</li>
+                <li> (Mobile) In case you close the keyboard, you can call it back by pressing the button from the buttom.</li>
+                <li> Proceed to next level or start again by pressing again START button</li>
+            </ol>
+            <p><i>
+                *You level up by finding a word.<br>
+                *You get points by leveling up.<br>
+                *You get extrapoints by finding the word quicker.<br>
+                **As you level up the time is shorter and the points you'll get, greater.<br>
+                **The game ends when you reach 5 mistakes or run out of time.
+            </i></p>
+        </div>
+        <div id="infoR"></div>
+
+    </div>
+
+
     <div id="status">
             <p id="level"></p>
             <p id="time"></p>
@@ -45,7 +79,7 @@
 </div>
 <form class="content">
 
-    <input id="hiddenInput"  type="text" name="hiddenInput" autofocus />
+    <input id="hiddenInput"  type="text" name="hiddenInput" />
 </form>
 <script type="text/javascript" src="script.js"></script>
 </body>
