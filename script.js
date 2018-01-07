@@ -303,15 +303,13 @@ readTextFile('words.txt').then((words) => {
     }, false);
 
     let something = document.getElementById(`hiddenInput`);
- something.addEventListener("input", (e) => {
+    something.addEventListener("input", (e) => {
+     
 
-console.log(e);
-     let hey = {key:something.value};
-     console.log(hey);
-     onKeypress(hey);
+        console.log({key: something.value.substr(id.length - 1)});
+        onKeypress({key: something.value.substr(id.length - 1)});
 
     }, false);
-
 
 
 });
