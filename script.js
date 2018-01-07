@@ -56,7 +56,7 @@ readTextFile('words.txt').then((words) => {
 
 
         reset.onclick = () => {
-            if (window.innerWidth <= 1280) {
+            if (screen.width <= 1280) {
                 document.getElementById('keyboard').style.display = 'inline';
             }
 
@@ -300,17 +300,17 @@ readTextFile('words.txt').then((words) => {
                 }
             }
         }
-    let something = document.getElementById(`hiddenInput`);
-        if (window.innerWidth > 1280) {
+
+        let something = document.getElementById(`hiddenInput`);
+        if (screen.width > 1280) {
             window.document.addEventListener("keydown", (event) => {
                 onKeypress(event);
             }, false);
         }
-      else {
+        else {
             something.addEventListener("input", (e) => {
 
 
-                console.log({key: something.value.substr(something.value.length - 1)});
                 onKeypress({key: something.value.substr(something.value.length - 1)});
                 something.value = '';
             }, false);
