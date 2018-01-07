@@ -5,30 +5,42 @@
     <meta charset="UTF-8">
     <title>Hangman</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="lib/soundjs-0.6.2.min.js"></script>
+    <script src="lib/axios-0.17.1.min.js"></script>
 </head>
 
 <body>
 
-    <div class="content">
-        <div class="aligner">
-            <button id="reset">START</button>
-        </div>
+
+<div class="content">
+    <div class="aligner">
+        <button id="reset">START</button>
     </div>
+    <div id="status">
+            <p id="level"></p>
+            <p id="time"></p>
 
+            <p id="points"></p>
 
-    <div class="content">
-        <div id="placeholder"></div>
-        <div class="aligner" id="final"></div>
     </div>
+    <div id="all_letters"></div>
+</div>
+
+<div class="content">
+    <div id="image"></div>
+    <div id="life"></div>
+</div>
+
+<div class="content">
+    <div id="placeholder"></div>
 
 
-    <div class="content">
-        <div id="image"></div>
-        <div id="life"></div>
-    </div>
+    <div class="aligner" id="final"></div>
+</div>
 
 
-    <script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

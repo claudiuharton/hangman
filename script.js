@@ -1,15 +1,24 @@
 async function readTextFile(file) {
-    let rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.send(null);
-    return rawFile.response.split('\n');
+    let data = await  axios.get(file);
+    return data.data.split('\n');
 
 }
 
 
+function playSound(soundID) {
+    createjs.Sound.play(soundID);
+}
+
+
 readTextFile('words.txt').then((words) => {
-    console.log(words);
+
     const MAX = 5;
+
+    createjs.Sound.registerSound("sounds/success.wav", 'success');
+    createjs.Sound.registerSound("sounds/fail.wav", 'fail');
+    createjs.Sound.registerSound("sounds/win.wav", 'win');
+    createjs.Sound.registerSound("sounds/error.wav", 'error');
+
 
     let reset = document.getElementById("reset");
     let word;
@@ -26,10 +35,11 @@ readTextFile('words.txt').then((words) => {
     };
     let remainingTime;
     let endTime;
-    let initialTime = 120 * 1000;
+    let initialTime = 120 * 1000 ;
     let initialPoints = 5;
     let levelPoints;
-    let currentTime =initialTime;
+    let currentTime = initialTime;
+
     function validate(strValue) {
         let objRegExp = /^[A-Z]+$/;
         return objRegExp.test(strValue) && strValue.length === 1;
@@ -37,20 +47,61 @@ readTextFile('words.txt').then((words) => {
 
 
     reset.onclick = () => {
-
-        if (status.level ===1){
-            levelPoints = initialPoints*2;
-            currentTime =initialTime;
-            endTime = Date.now() + initialTime/2;
-        }else{
-            levelPoints *=2;
-            currentTime /=2;
-            endTime = Date.now() + currentTime;
+        if (!document.getElementById("final").firstChild) {
+            status.points = 0;
+            status.level = 1;
         }
 
-
-        console.log('endtime: ' + endTime/60);
+        if (status.level === 1) {
+            levelPoints = initialPoints * 2;
+            currentTime = initialTime;
+            endTime = Date.now() + initialTime;
+        } else {
+            levelPoints *= 2;
+            currentTime /= 1.25;
+            endTime = Date.now() + currentTime;
+        }
         memory = [];
+        remainingTime = endTime - Date.now();
+        document.getElementById("level").innerHTML = `LEVEL: ${status.level}`;
+        document.getElementById("points").innerHTML = `POINTS: ${status.points}`;
+        document.getElementById("time").innerHTML = `TIME: ${Math.floor(remainingTime / 1000)} seconds`;
+
+
+        setInterval(() => {
+            if (!document.getElementById("final").firstChild) {
+                remainingTime = endTime - Date.now();
+            }
+            if (remainingTime > 0) {
+
+                document.getElementById("time").innerHTML = `TIME: ${Math.floor(remainingTime / 1000)} seconds`;
+
+                if (Math.floor(remainingTime / 1000) < 6) {
+                    document.getElementById("time").setAttribute('style', 'color:red');
+                } else {
+                    document.getElementById("time").setAttribute('style', 'color:inherit');
+                }
+
+            }
+
+            if (remainingTime < 0 && !document.getElementById("final").firstChild) {
+                document.getElementById("time").innerHTML = 'TIME: 0 seconds';
+                playSound('fail');
+                let final = document.getElementById("final");
+                let newParagraph = document.createElement("p");
+                newParagraph.setAttribute('id', 'message');
+                newParagraph.setAttribute('style', 'color:red');
+                newParagraph.innerHTML = `OUT OF TIME! The word was <b>"${word.toUpperCase()}"</b>.<br>
+                                          Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
+                final.appendChild(newParagraph);
+
+
+                status.points = 0;
+                status.level = 1;
+            }
+        }, 1000);
+
+
         //reset.innerHTML = "RESET";
         let myNode = document.getElementById("placeholder");
         while (myNode.firstChild) {
@@ -58,6 +109,10 @@ readTextFile('words.txt').then((words) => {
         }
 
         myNode = document.getElementById("life");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+        myNode = document.getElementById("all_letters");
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
         }
@@ -70,6 +125,14 @@ readTextFile('words.txt').then((words) => {
         myNode = document.getElementById("image");
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
+        }
+
+
+        let all_letters = document.getElementById("all_letters");
+        for (let i = 0, len = 26; i < len; i++) {
+            let newParagraph = document.createElement("p");
+            newParagraph.innerHTML = String.fromCharCode(i + 65);
+            all_letters.appendChild(newParagraph);
         }
 
 
@@ -107,8 +170,6 @@ readTextFile('words.txt').then((words) => {
 
 
     document.addEventListener("keydown", (event) => {
-        remainingTime = endTime - Date.now();
-        console.log(`remainingTime: ${Math.floor(remainingTime/1000)} seconds `);
 
 
         if (!document.getElementById('message')) {
@@ -116,23 +177,33 @@ readTextFile('words.txt').then((words) => {
             let flag_noUnderLineRemaining = true;
             let flag_firstPress = null;
             event.preventDefault();
+            let all_letters = document.getElementById("all_letters");
             for (let i = 0, len = word.length; i < len; i++) {
                 let newParagraph = placeholder.querySelector(`p:nth-child(${ i + 1 })`);
+
                 if (event.key.toUpperCase() === word.charAt(i).toUpperCase()) {
+
+
                     if (newParagraph.innerHTML !== '_') {
+
                         flag_firstPress = newParagraph.innerHTML;
+
+                    } else {
+                        playSound('success');
+                        newParagraph.innerHTML = event.key.toUpperCase();
+                        let letterParagraph = all_letters.querySelector(`p:nth-child(${ word.charAt(i).toUpperCase().charCodeAt(0) - 64 })`);
+                        letterParagraph.setAttribute("style", "color:green; font-weight: bold");
+
                     }
-                    newParagraph.innerHTML = event.key.toUpperCase();
+
                     flag_isValidPress = false;
 
                 }
                 if (newParagraph.innerHTML === '_') {
+
                     flag_noUnderLineRemaining = false;
                 }
 
-                // if (flag_firstPress && memory.includes(event.key.toUpperCase())) {
-                //     flag_isValidPress = true;
-                // }
 
 
             }
@@ -140,75 +211,76 @@ readTextFile('words.txt').then((words) => {
             if (!flag_isValidPress) {
                 memory.push(event.key.toUpperCase());
             }
-            if (flag_noUnderLineRemaining && remainingTime>0) {
-                status.points+=levelPoints+(Math.floor(remainingTime/6000*levelPoints)  );
+            if (flag_noUnderLineRemaining && remainingTime > 0) {
+                status.points += levelPoints + (Math.floor(remainingTime / (6 * 1000) * levelPoints));
                 status.level++;
+                playSound('win');
+                document.getElementById("level").innerHTML = `LEVEL: ${status.level}`;
+                document.getElementById("points").innerHTML = `POINTS: ${status.points}`;
 
                 let final = document.getElementById("final");
                 let newParagraph = document.createElement("p");
                 newParagraph.setAttribute('id', 'message');
                 newParagraph.setAttribute('style', 'color:green');
-                newParagraph.innerHTML = `You win! The word was <b>"${word.toUpperCase()}"</b>..<br> You reached level ${status.level} and obtained ${status.points} points.<br> You can proceed to next level.`;
+                newParagraph.innerHTML = `YOU WIN! The word was <b>"${word.toUpperCase()}"</b>.<br>                   
+                                           Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
                 final.appendChild(newParagraph);
 
-                console.log(status);
-            }
 
-            if (remainingTime < 0){
-
-                let final = document.getElementById("final");
-                let newParagraph = document.createElement("p");
-                newParagraph.setAttribute('id', 'message');
-                newParagraph.setAttribute('style', 'color:red');
-                newParagraph.innerHTML = `You were out of time! The word was <b>"${word.toUpperCase()}"</b>.<br> You reached level ${status.level} and obtained ${status.points} points.`;
-                final.appendChild(newParagraph);
-
-                console.log(status);
-                status.points=0;
-                status.level=1;
             }
 
 
             if (flag_isValidPress && validate(event.key.toUpperCase())) {
-                currentLives++;
-                remaining.innerHTML = (MAX - currentLives).toString();
+                let select = all_letters.querySelector(`p:nth-child(${event.key.toUpperCase().charCodeAt(0) - 64 })`);
+                if (select.style.color !== 'red') {
 
-                switch (currentLives) {
-                    case 1:
-                        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang1.gif');
-                        break;
-                    case 2:
-                        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang2.gif');
-                        break;
-                    case 3:
-                        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang3.gif');
-                        break;
-                    case 4:
-                        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang4.gif');
-                        break;
-                    case 5:
-                        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang5.gif');
-                        break;
+                    currentLives++;
+                    playSound('error');
+                    let letterParagraph = all_letters.querySelector(`p:nth-child(${event.key.toUpperCase().charCodeAt(0) - 64 })`);
+                    letterParagraph.setAttribute("style", "color:red; font-weight: bold");
+                    remaining.innerHTML = (MAX - currentLives).toString();
 
-                    default:
-                        break;
+                    switch (currentLives) {
+                        case 1:
+                            image.setAttribute('src', 'images/hang0.gif');
+                            break;
+                        case 2:
+                            image.setAttribute('src', 'images/hang2.gif');
+                            break;
+                        case 3:
+                            image.setAttribute('src', 'images/hang3.gif');
+                            break;
+                        case 4:
+                            image.setAttribute('src', 'images/hang4.gif');
+                            break;
+                        case 5:
+                            image.setAttribute('src', 'images/hang5.gif');
+                            break;
+
+                        default:
+                            break;
+                    }
+
+
+                    if (MAX - currentLives === 0) {
+                        playSound('fail');
+
+
+                        let final = document.getElementById("final");
+                        let newParagraph = document.createElement("p");
+                        newParagraph.setAttribute('id', 'message');
+                        newParagraph.setAttribute('style', 'color:red');
+                        newParagraph.innerHTML = `YOU LOOSED! The word was <b>"${word.toUpperCase()}"</b>.<br> 
+                                              Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
+                        final.appendChild(newParagraph);
+                        status.points = 0;
+                        status.level = 1;
+                    }
                 }
 
 
-                if (MAX - currentLives === 0) {
-                    let final = document.getElementById("final");
-                    let newParagraph = document.createElement("p");
-                    newParagraph.setAttribute('id', 'message');
-                    newParagraph.setAttribute('style', 'color:red');
-                    newParagraph.innerHTML = `You loosed! The word was <b>"${word.toUpperCase()}"</b>.<br> You reached level ${status.level} and obtained ${status.points} points.`;
-                    final.appendChild(newParagraph);
-                    status.points=0;
-                    status.level=1;
-                }
+                event.stopPropagation();
             }
-
-
-            event.stopPropagation();
         }
     }, true);
 
