@@ -302,7 +302,7 @@ readTextFile('words.txt').then((words) => {
         onKeypress(event);
     }, false);
 
- document.addEventListener("input", (event) => {
+ document.getElementById(`hiddenInput`).addEventListener("input", (event) => {
         onKeypress(event);
     }, false);
 
