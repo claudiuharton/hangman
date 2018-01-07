@@ -180,7 +180,7 @@ readTextFile('words.txt').then((words) => {
 
     document.addEventListener("keydown", (event) => {
 
-
+        document.getElementById("#hiddeninput").focus();
         if (!document.getElementById('message')) {
             flag_isValidPress = true;
             let flag_noUnderLineRemaining = true;
@@ -299,10 +299,9 @@ readTextFile('words.txt').then((words) => {
     }, false);
 
 
-    document.getElementById('keyboard').addEventListener('click', function() {
-        document.getElementById("#hiddeninput").focus();
 
-    }, false);
+
+
 
 
 

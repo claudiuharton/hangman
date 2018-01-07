@@ -22,7 +22,7 @@ button{
     width: 12em;
     display: none;
 }
-@media (max-device-width: 1280px) and (-webkit-min-device-pixel-ratio: 1.5) and (orientation: portrait) {
+@media (max-device-width: 1280px)  {
     #keyboard{
         display: inline;
     }
@@ -75,7 +75,7 @@ button{
 }
 
 form{
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
 #all_letters{
     color: #cecece;
