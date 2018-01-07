@@ -264,7 +264,7 @@ readTextFile('words.txt').then((words) => {
 
                         switch (currentLives) {
                             case 1:
-                                image.setAttribute('src', 'images/hang0.gif');
+                                image.setAttribute('src', 'images/hang1.gif');
                                 break;
                             case 2:
                                 image.setAttribute('src', 'images/hang2.gif');
