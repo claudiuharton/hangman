@@ -303,7 +303,7 @@ readTextFile('words.txt').then((words) => {
     }, false);
 
  document.getElementById(`hiddenInput`).addEventListener("input", (event) => {
-     alert(event.key);
+     alert(this.value);
      onKeypress(event);
 
     }, false);
