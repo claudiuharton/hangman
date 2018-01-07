@@ -304,10 +304,10 @@ readTextFile('words.txt').then((words) => {
 
     let something = document.getElementById(`hiddenInput`);
     something.addEventListener("input", (e) => {
-     
 
-        console.log({key: something.value.substr(id.length - 1)});
-        onKeypress({key: something.value.substr(id.length - 1)});
+
+        console.log({key: something.value.substr(something.value.length - 1)});
+        onKeypress({key: something.value.substr(something.value.length - 1)});
 
     }, false);
 
