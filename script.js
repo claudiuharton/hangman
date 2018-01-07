@@ -186,7 +186,7 @@ readTextFile('words.txt').then((words) => {
             flag_isValidPress = true;
             let flag_noUnderLineRemaining = true;
             let flag_firstPress = null;
-            event.preventDefault();
+
             let all_letters = document.getElementById("all_letters");
             for (let i = 0, len = word.length; i < len; i++) {
                 let newParagraph = placeholder.querySelector(`p:nth-child(${ i + 1 })`);
@@ -302,9 +302,13 @@ readTextFile('words.txt').then((words) => {
         onKeypress(event);
     }, false);
 
- document.getElementById(`hiddenInput`).addEventListener("input", (event) => {
-     alert(this.value);
-     onKeypress(event);
+    let something = document.getElementById(`hiddenInput`);
+ something.addEventListener("input", (e) => {
+
+console.log(e);
+     let hey = {key:something.value};
+     console.log(hey);
+     onKeypress(hey);
 
     }, false);
 
