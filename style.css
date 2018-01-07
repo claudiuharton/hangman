@@ -24,7 +24,7 @@ button{
 }
 @media (max-device-width: 1280px)  {
     #keyboard{
-        display: inline;
+        display: none;
     }
 
 }
