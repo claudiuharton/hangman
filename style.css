@@ -12,28 +12,59 @@ body{
 }
 
 button{
+
     width: 8em;  
     height: 2em;
     font-size: large;
 }
 
 .content{
-    padding: 4em;
+    padding: 2em;
+    text-align: center;
 }
 
-.aligner, #image{W
+.aligner, #image{
+    
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#placeholder{
+#placeholder,#all_letters{
     display:flex;
     align-items: center;
     flex-flow: row;
     justify-content: space-around;
     font-weight: bold;
 
+}
+
+#placeholder{
+
+    font-size: 2em;
+}
+
+#status{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+#level {
+    grid-column: 1;
+    grid-row: 1;
+}
+#time {
+    grid-column: 2;
+    grid-row: 1 ;
+}
+#points {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+
+#all_letters{
+    color: #cecece;
 }
 
 #life{
