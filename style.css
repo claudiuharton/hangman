@@ -22,12 +22,7 @@ button{
     width: 12em;
     display: none;
 }
-@media (max-device-width: 1280px)  {
-    #keyboard{
-        display: none;
-    }
 
-}
 
 
 .content{
@@ -75,7 +70,7 @@ button{
 }
 
 form{
-    /*visibility: hidden;*/
+    opacity: 0;
 }
 #all_letters{
     color: #cecece;

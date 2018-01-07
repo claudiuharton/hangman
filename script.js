@@ -56,6 +56,10 @@ readTextFile('words.txt').then((words) => {
 
 
     reset.onclick = () => {
+        if (window.innerWidth <= 1280) {
+            document.getElementById('keyboard').style.display = 'inline';
+        }
+
         document.getElementById("hiddenInput").focus();
         document.getElementById("hiddenInput").click();
         if (!document.getElementById("final").firstChild) {
@@ -181,7 +185,6 @@ readTextFile('words.txt').then((words) => {
 
     function onKeypress(event) {
 
-
         if (!document.getElementById('message')) {
             flag_isValidPress = true;
             let flag_noUnderLineRemaining = true;
@@ -293,7 +296,7 @@ readTextFile('words.txt').then((words) => {
                 }
 
 
-                event.stopPropagation();
+                //event.stopPropagation();
             }
         }
     }
@@ -308,8 +311,12 @@ readTextFile('words.txt').then((words) => {
 
         console.log({key: something.value.substr(something.value.length - 1)});
         onKeypress({key: something.value.substr(something.value.length - 1)});
-
+        something.value = '';
     }, false);
 
+    document.getElementById('keyboard').addEventListener("click", (event) => {
+        something.focus();
+        something.click();
 
+    }, false);
 });
