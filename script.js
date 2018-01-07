@@ -12,12 +12,21 @@ function playSound(soundID) {
 
 readTextFile('words.txt').then((words) => {
 
+    let target = document.getElementsByTagName("input")[0];
+
+    if (Event.currentTarget !== target) {
+        target.focus();
+        target.click();
+    }
+
+
     const MAX = 5;
 
     createjs.Sound.registerSound("sounds/success.wav", 'success');
     createjs.Sound.registerSound("sounds/fail.wav", 'fail');
     createjs.Sound.registerSound("sounds/win.wav", 'win');
     createjs.Sound.registerSound("sounds/error.wav", 'error');
+    createjs.Sound.registerSound("sounds/again.wav", 'again');
 
 
     let reset = document.getElementById("reset");
@@ -35,7 +44,7 @@ readTextFile('words.txt').then((words) => {
     };
     let remainingTime;
     let endTime;
-    let initialTime = 120 * 1000 ;
+    let initialTime = 120 * 1000;
     let initialPoints = 5;
     let levelPoints;
     let currentTime = initialTime;
@@ -92,7 +101,7 @@ readTextFile('words.txt').then((words) => {
                 newParagraph.setAttribute('id', 'message');
                 newParagraph.setAttribute('style', 'color:red');
                 newParagraph.innerHTML = `OUT OF TIME! The word was <b>"${word.toUpperCase()}"</b>.<br>
-                                          Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
+                                          Check out the definition on <a target="_blank" href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
                 final.appendChild(newParagraph);
 
 
@@ -144,7 +153,7 @@ readTextFile('words.txt').then((words) => {
 
         let img = document.getElementById("image");
         image = document.createElement("img");
-        image.setAttribute('src', 'https://raw.githubusercontent.com/mikenorthorp/Hangman/master/images/hang0.gif');
+        image.setAttribute('src', 'images/hang0.gif');
         img.appendChild(image);
 
         currentLives = 0;
@@ -185,7 +194,7 @@ readTextFile('words.txt').then((words) => {
 
 
                     if (newParagraph.innerHTML !== '_') {
-
+                        playSound('again');
                         flag_firstPress = newParagraph.innerHTML;
 
                     } else {
@@ -205,7 +214,6 @@ readTextFile('words.txt').then((words) => {
                 }
 
 
-
             }
 
             if (!flag_isValidPress) {
@@ -223,14 +231,18 @@ readTextFile('words.txt').then((words) => {
                 newParagraph.setAttribute('id', 'message');
                 newParagraph.setAttribute('style', 'color:green');
                 newParagraph.innerHTML = `YOU WIN! The word was <b>"${word.toUpperCase()}"</b>.<br>                   
-                                           Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
+                                           Check out the definition on <a target="_blank" href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
                 final.appendChild(newParagraph);
 
 
             }
 
 
-            if (flag_isValidPress && validate(event.key.toUpperCase())) {
+
+            if (!validate(event.key.toUpperCase())) {
+                playSound('again');
+            }
+            else if (flag_isValidPress) {
                 let select = all_letters.querySelector(`p:nth-child(${event.key.toUpperCase().charCodeAt(0) - 64 })`);
                 if (select.style.color !== 'red') {
 
@@ -271,17 +283,27 @@ readTextFile('words.txt').then((words) => {
                         newParagraph.setAttribute('id', 'message');
                         newParagraph.setAttribute('style', 'color:red');
                         newParagraph.innerHTML = `YOU LOOSED! The word was <b>"${word.toUpperCase()}"</b>.<br> 
-                                              Check out the definition on <a href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
+                                              Check out the definition on <a target="_blank" href="https://dexonline.ro/definitie/${word}">DEX</a>.`;
                         final.appendChild(newParagraph);
                         status.points = 0;
                         status.level = 1;
                     }
+                } else {
+                    playSound('again');
                 }
 
 
                 event.stopPropagation();
             }
         }
-    }, true);
+    }, false);
+
+
+    document.getElementById('keyboard').addEventListener('click', function() {
+        document.getElementById("#hiddeninput").focus();
+
+    }, false);
+
+
 
 });
