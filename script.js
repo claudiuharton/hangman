@@ -179,8 +179,7 @@ readTextFile('words.txt').then((words) => {
 
     };
 
-
-    document.addEventListener("keydown", (event) => {
+    function onKeypress(event) {
 
 
         if (!document.getElementById('message')) {
@@ -240,7 +239,6 @@ readTextFile('words.txt').then((words) => {
             }
 
 
-
             if (!validate(event.key.toUpperCase())) {
                 playSound('again');
             }
@@ -298,12 +296,15 @@ readTextFile('words.txt').then((words) => {
                 event.stopPropagation();
             }
         }
+    }
+
+    document.addEventListener("keydown", (event) => {
+        onKeypress(event);
     }, false);
 
-
-
-
-
+ document.addEventListener("input", (event) => {
+        onKeypress(event);
+    }, false);
 
 
 
